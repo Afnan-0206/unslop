@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, symlinkSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, realpathSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,7 +9,7 @@ import { resolveStoryFile } from "../skills/unslop/scripts/story-path.mjs";
 // A root with a sibling whose name starts with the root's, the shape
 // the prefix check gets wrong: /tmp/x/site vs /tmp/x/site-private.
 const setup = () => {
-  const base = mkdtempSync(join(tmpdir(), "unslop-story-path-"));
+  const base = realpathSync(mkdtempSync(join(tmpdir(), "unslop-story-path-")));
   const root = join(base, "site");
   const sibling = join(base, "site-private");
   mkdirSync(join(root, "sub"), { recursive: true });
